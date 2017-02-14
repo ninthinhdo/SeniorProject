@@ -1,19 +1,11 @@
 #include <Tetris.h>
-
-// IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
-// pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
-// and minimize distance between Arduino and first pixel.  Avoid connecting
-// on a live circuit...if you must, connect GND first.
-
+#include <Snake.h>
 
 void setup() {
   // Initialize serial
 	Serial.begin(9600);
 	Serial1.begin(9600);  // To Nano, Game Controller
 	Serial2.begin(9600);  // To Teensy, Audio
-
-  // Play Tetris Theme
-	Serial2.print("THEME.TETRIS.");
 }
 
 /*
@@ -28,23 +20,46 @@ void loop() {
   if(Serial.available() > 0){
     String command = Serial.readStringUntil('.');
     if(command.equals("TetrisGame")){
-    playTetris();
+      playTetris();
+    }
+    else if(command.equals("SnakeGame")){
+      playSnake();
     }
   }
 }
-
 
 void playTetris(){
   Serial.println("Playing Tetris...");
-  
-  String command;
   Tetris tetris;
-  while(!command.equals("STOP")){
-    if(Serial.available() > 0){
-      command = Serial.readStringUntil('.');
-    }
-    else{
+  while(!programStop()){
       tetris.Update();
-    }
   }
+  Serial.println("...Exiting Tetris");
 }
+
+void playSnake(){
+  Serial.println("Playing Snake...");
+  Snake snake;
+  while(!programStop()){
+      snake.Update();
+  }
+  Serial.println("...Exiting Snake");
+}
+
+bool programStop(){
+  if(Serial.available() > 0){
+    String command = Serial.readStringUntil('.');
+    if(command.equals("STOP"))
+      return true;
+  }
+  return false;
+}
+
+
+
+
+
+
+
+
+
