@@ -107,59 +107,49 @@ void loop() {
   // put your main code here, to run repeatedly:
   
   if(Serial1.available() > 0){
-    char filename;
     input = Serial1.readStringUntil('.');
-
     if(input.equals("FFT")){
-      mixer3.gain(0, 0.5);
-      mixer3.gain(1, 0.5);
-      input = Serial1.readStringUntil('.');
       audioSpectrum();
     }
-    else if(input.equals("THEME")){
-      fft1024_1.processorUsageMaxReset();
-      mixer3.gain(0, 0);
-      mixer3.gain(1, 0);
-      
-      input = Serial1.readStringUntil('.');
-      theme = input + ".WAV";
-      
-      loopThemeMusic(1);
-    }
-    else{
-      playSoundEffect(input + ".WAV");
-       // print a summary of the current & maximum usage
-       /*
-        Serial.print("CPU: ");
-        Serial.print("  ");
-        Serial.print("fft=");
-        Serial.print(fft1024_1.processorUsage());
-        Serial.print(",");
-        Serial.print(fft1024_1.processorUsageMax());
-        Serial.print("  ");
-        Serial.print("all=");
-        Serial.print(AudioProcessorUsage());
-        Serial.print(",");
-        Serial.print(AudioProcessorUsageMax());
-        Serial.print("    ");
-        Serial.print("Memory: ");
-        Serial.print(AudioMemoryUsage());
-        Serial.print(",");
-        Serial.print(AudioMemoryUsageMax());
-        Serial.println();
-        */
+    else if(input.equals("GAME")){
+      gameMode();
     }
   }
-
-  // loop theme music
-  if((elapsedTime % 100) == 0)
-    loopThemeMusic(0);
 }
 
-void audioSpectrum(){
-  Serial.println("Audio Spectrum Mode");
+void gameMode(){
+  fft1024_1.processorUsageMaxReset();
+  mixer3.gain(0, 0);
+  mixer3.gain(1, 0);
+      
+  input = Serial1.readStringUntil('.');
+  theme = input + ".WAV";
+      
+  loopThemeMusic(1);
+
   while(!input.equals("STOP")){
+    
+    if(Serial1.available() > 0){
+      input = Serial1.readStringUntil('.');
+      playSoundEffect(input + ".WAV");
+    }
+    
+    // loop theme music
+    if((elapsedTime % 100) == 0)
+      loopThemeMusic(0);
+  }
+
+  stopSdPlayer();
+}
+
+
+void audioSpectrum(){
+  mixer3.gain(0, 0.5);
+  mixer3.gain(1, 0.5);
+  Serial.println("Audio Spectrum Mode");
   
+  while(!input.equals("STOP")){
+    
     if(Serial1.available() > 0){
       input = Serial1.readStringUntil('.');
       playWav1(input + ".WAV");
@@ -266,3 +256,23 @@ void playSoundEffect(String sound)
   // A brief delay for the library read WAV info
   delay(10);
 }
+
+
+void stopSdPlayer()
+{
+  playSdWav1.stop();
+  playSdWav2.stop();
+  playSdWav3.stop();
+  playSdWav4.stop();
+}
+
+
+
+
+
+
+
+
+
+
+

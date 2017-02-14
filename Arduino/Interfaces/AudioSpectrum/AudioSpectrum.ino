@@ -18,15 +18,10 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(280, PIN, NEO_GRB + NEO_KHZ800);
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
-// Global definitions
-#define MAX_ROW 19
-#define MAX_COL 13
-
 // My Variables
 String input;
 uint8_t pixelLevel[14];
 uint8_t peakLevel[14];
-byte delayMillis = 0;
 
 void setup()
 {
@@ -36,11 +31,11 @@ void setup()
   
   // Initialize LED strip
   strip.begin();
-  strip.setBrightness(128);
+  strip.setBrightness(32);
 
   initPeakLevel();
 
-  //Serial2.print("FFT.FREALLUV.");
+  Serial2.print("FFT.");
 }
 
 void loop()
@@ -57,34 +52,6 @@ void loop()
     updateLEDs();
   }
 
-  /*
-  if(delayMillis == 100){
-    Serial.println("Lowering peak");
-    lowerPeak();
-    delayMillis = 0;
-  }
-  
-  delay(1);
-  delayMillis++;
-  */
-}
-
-void lowerPeak(){
-  for(int col = 0; col <= MAX_COL; col++){
-    // Clear top peak
-    strip.setPixelColor(PixelMatrice[MAX_ROW - peakLevel[col]][col], 0);
-    if(peakLevel[col] > 0)
-      peakLevel[col]--;
-  }
-  strip.show();
-}
-
-void assignNewPeak()
-{
-  for(int i = 0; i <= MAX_COL; i++){
-    if((pixelLevel[i] > peakLevel[i]) && !(pixelLevel[i] > MAX_ROW))
-      peakLevel[i] = pixelLevel[i];
-  }
 }
 
 void updateLEDs()

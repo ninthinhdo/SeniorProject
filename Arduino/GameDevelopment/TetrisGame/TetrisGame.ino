@@ -48,7 +48,7 @@ void setup() {
   strip.setBrightness(32);
   
   // Play Tetris Theme
-  Serial2.print("THEME.TETRIS.");
+  Serial2.print("GAME.TETRIS.");
 
   // Initialize logicMatrice to zeros;
   clearLogicMatrice();

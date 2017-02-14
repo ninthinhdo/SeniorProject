@@ -81,7 +81,10 @@ void setup() {
 void loop() {
 
   //200ms delay
-  waitForInput(100);
+  //waitForInput(100);
+
+  delay(200);
+  inputDirection();
 
   updateFrame();
 
