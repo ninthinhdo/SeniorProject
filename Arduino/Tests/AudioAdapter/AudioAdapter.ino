@@ -114,6 +114,9 @@ void loop() {
     else if(input.equals("GAME")){
       gameMode();
     }
+    else{
+      playSoundEffect(input + ".WAV");
+    }
   }
 }
 
@@ -211,6 +214,7 @@ void audioSpectrum(){
     }
     
   }
+  stopSdPlayer();
 }
 
 void playWav1(String wavFile)

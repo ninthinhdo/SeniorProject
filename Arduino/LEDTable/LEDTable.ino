@@ -22,6 +22,12 @@ void setup()
 	Serial.begin(9600);
 	Serial1.begin(9600);  // To Nano, Game Controller
 	Serial2.begin(9600);  // To Teensy, Audio
+
+  // Wait for device to connect to bluetooth module
+  while(Serial.available()==0);
+  Serial.println("Bluetooth connected.");
+  String command = Serial.readStringUntil('.');
+  Serial2.print("BTCONN.");
 }
 
 /*
@@ -85,6 +91,10 @@ bool programStop()
     if(command.equals("STOP")){
       Serial2.print("STOP.");
       return true;
+    }
+    else if(command.equals("PLAY")){
+      command = Serial.readStringUntil('.');
+      Serial2.print(command + ".");
     }
   }
   return false;
