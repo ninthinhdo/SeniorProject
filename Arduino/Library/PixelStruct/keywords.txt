@@ -1,0 +1,8 @@
+PixelStruct	KEYWORD1
+PixelMatrice	KEYWORD3
+Block_4x4	KEYWORD3
+Block_3x3	KEYWORD3
+BlockList_4x4	KEYWORD3
+BlockList_3x3	KEYWORD3
+Numbers	KEYWORD3
+ColorPick	KEYWORD3
