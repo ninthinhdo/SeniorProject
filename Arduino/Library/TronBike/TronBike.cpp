@@ -1,23 +1,18 @@
 #include "Arduino.h"
 #include "TronBike.h"
 
-TronBike::TronBike(int rightPin, int upPin, int leftPin, int downPin, int bikeRow, int bikeCol, int initialDirection, uint32_t c)
+TronBike::TronBike()
 {
-	//Initialize input pins
-	pinMode(rightPin, INPUT);
-	pinMode(upPin, INPUT);
-	pinMode(leftPin, INPUT);
-	pinMode(downPin, INPUT);
-	digitalWrite(rightPin, HIGH);
-	digitalWrite(upPin, HIGH);
-	digitalWrite(downPin, HIGH);
-	digitalWrite(leftPin, HIGH);
 
+}
+
+TronBike::TronBike(String rightString, String upString, String leftString, String downString, int bikeRow, int bikeCol, int initialDirection, uint32_t c)
+{
 	//Assign pins to private variables
-	_right = rightPin;
-	_up = upPin;
-	_left = leftPin;
-	_down = downPin;
+	_right = rightString;
+	_up = upString;
+	_left = leftString;
+	_down = downString;
 	
 
 	//Initialize private varialbes
@@ -25,6 +20,7 @@ TronBike::TronBike(int rightPin, int upPin, int leftPin, int downPin, int bikeRo
 	col = bikeCol;
 	direction = initialDirection;
 	color = c;
+
 	//directions
 	right = false;
 	up = false;
@@ -32,29 +28,27 @@ TronBike::TronBike(int rightPin, int upPin, int leftPin, int downPin, int bikeRo
 	down = false;
 }
 
-void TronBike::inputDirection(){
-	//Read INPUTS
-	byte rightBtn = digitalRead(_right);
-	byte upBtn = digitalRead(_up);
-	byte leftBtn = digitalRead(_left);
-	byte downBtn = digitalRead(_down);
+void TronBike::inputDirection(String input){
 
-	if (rightBtn == LOW){
+	if (input.equals(_right)){
 		right = true;
 		up = false;
 		left = false;
 		down = false;
-	} else if (upBtn == LOW){
+	}
+	else if (input.equals(_up)){
 		right = false;
 		up = true;
 		left = false;
 		down = false;
-	} else if (leftBtn == LOW){
+	}
+	else if (input.equals(_left)){
 		right = false;
 		up = false;
 		left = true;
 		down = false;
-	} else if (downBtn == LOW){
+	}
+	else if (input.equals(_down)){
 		right = false;
 		up = false;
 		left = false;

@@ -6,22 +6,23 @@
 class TronBike
 {
 public:
-	TronBike(int rightPin, int upPin, int leftPin, int downPin, int bikeRow, int bikeCol, int initialDirection, uint32_t c);
+	TronBike();
+	TronBike(String upString, String rightString, String downString, String leftString, int bikeRow, int bikeCol, int initialDirection, uint32_t c);
 
 	int direction; //0 is right, 1 is up, 2 is left, 3 is down
 	int row;
 	int col;
 	uint32_t color;
 
-	void inputDirection();
+	void inputDirection(String input);
 	void updateDirection();
 	void updatePosition();
 
 private:
-	int _right;
-	int _up;
-	int _left;
-	int _down;
+	String _right;
+	String _up;
+	String _left;
+	String _down;
 	bool right;
 	bool up;
 	bool left;

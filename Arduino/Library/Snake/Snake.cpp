@@ -112,11 +112,10 @@ Number dash = {
 
 Number *Numbers[] = { &zero, &one, &two, &three, &four, &five, &six, &seven, &eight, &nine, &dash };
 
-
 Snake::Snake()
 {
 	// Play Tetris Theme
-	Serial2.print("GAME.ARCADE2.");
+	Serial2.print("GAME.ARCADE1.");
 
 	//Initialize logicMatrice to zeros;
 	clearLogicMatrice();
@@ -339,7 +338,7 @@ void Snake::updatePosition()
 
 void Snake::blinkHead(uint16_t wait)
 {
-	Serial2.print("DEATH2.");
+	Serial2.print("DEATH1.");
 
 	for (int i = 0; i < 4; i++){
 		snake_strip.setPixelColor(PixelMatrice[row][col], white);
