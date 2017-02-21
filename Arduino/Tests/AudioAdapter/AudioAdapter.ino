@@ -38,11 +38,8 @@ AudioConnection          patchCord16(mixer4, 0, mixer3, 2);
 AudioConnection          patchCord17(mixer5, 0, i2s1, 1);
 AudioConnection          patchCord18(mixer5, 0, mixer3, 3);
 AudioConnection          patchCord19(mixer3, fft1024_1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=437,682
 // GUItool: end automatically generated code
-
-
-
-AudioControlSGTL5000     sgtl5000_1;
 
 // Use these with the audio adaptor board
 #define SDCARD_CS_PIN    10
@@ -53,6 +50,7 @@ AudioControlSGTL5000     sgtl5000_1;
 String input;
 String theme = "";
 elapsedMillis elapsedTime;
+float vol = 0.5;
 
 // An array to hold the 16 frequency bands
 float level[14];
@@ -67,7 +65,7 @@ void setup() {
   AudioMemory(30);
 
   sgtl5000_1.enable();
-  sgtl5000_1.volume(1.0);
+  sgtl5000_1.volume(0.5);
 
   // Initialize gains
   mixer1.gain(0, 0.5);
@@ -100,7 +98,6 @@ void setup() {
       delay(500);
     }
   }
- 
 }
 
 void loop() {
@@ -118,6 +115,8 @@ void loop() {
       playSoundEffect(input + ".WAV");
     }
   }
+
+  updateVolume();  
 }
 
 void gameMode(){
@@ -140,6 +139,9 @@ void gameMode(){
     // loop theme music
     if((elapsedTime % 100) == 0)
       loopThemeMusic(0);
+
+    
+    updateVolume();
   }
 
   stopSdPlayer();
@@ -201,7 +203,7 @@ void audioSpectrum(){
       level[13] = fft1024_1.read(250, 511);
 
       for (int i=0; i<14; i++) {
-        int newLevel = level[i] * 200;
+        int newLevel = level[i] * 200 * vol * vol;
         pixelLevel[i] = map(newLevel, 0, 30, 0, 19);
         //Serial.print(pixelLevel[i]);
         //Serial.print(" ");
@@ -212,7 +214,8 @@ void audioSpectrum(){
       Serial1.write('X');
       delay(50);
     }
-    
+
+    updateVolume();
   }
   stopSdPlayer();
 }
@@ -270,6 +273,14 @@ void stopSdPlayer()
   playSdWav4.stop();
 }
 
+void updateVolume(){
+    if(elapsedTime > 250){
+    elapsedTime = 0;
+    int knob = analogRead(A1);
+    vol = (float) knob / 1023.0;
+    sgtl5000_1.volume(vol);
+  }
+}
 
 
 

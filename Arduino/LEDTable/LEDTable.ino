@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Tetris.h>
 #include <Snake.h>
+#include <Tron.h>
 #include <AudioSpectrum.h>
 
 #include "Adafruit_NeoPixel.h"
@@ -23,6 +24,8 @@ void setup()
 	Serial1.begin(9600);  // To Nano, Game Controller
 	Serial2.begin(9600);  // To Teensy, Audio
 
+  Serial2.print("STOP.");
+  
   // Wait for device to connect to bluetooth module
   while(Serial.available()==0);
   Serial.println("Bluetooth connected.");
@@ -48,6 +51,9 @@ void loop()
     else if(command.equals("SnakeGame")){
       playSnake();
     }
+    else if(command.equals("TronGame")){
+      playTron();
+    }
     else if(command.equals("AudioSpectrum")){
       audioSpectrum();
     }
@@ -71,6 +77,16 @@ void playSnake()
       snake.Update();
   }
   Serial.println("...Exiting Snake");
+}
+
+void playTron()
+{
+  Serial.println("Initializing Tron...");
+  Tron tron;
+  while(!programStop()){
+      tron.Update();
+  }
+  Serial.println("...Exiting Tron");
 }
 
 void audioSpectrum()
